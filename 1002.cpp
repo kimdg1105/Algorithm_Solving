@@ -2,34 +2,49 @@
 #include <cmath>
 using namespace std;
 
-int main(){
-    int x1,x2,y1,y2,r1,r2;
-    int t;
-    cin >> t;
-    for(int i=0;i<t;i++){
-        cin >> x1 >> y1 >> r1 >> x2 >> y2>> r2;
-        double len=0;
-        len = sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
-        int pick=0;
-        pick = max(r1,r2);
-        pick = max(pick,int(len));
-        if(x1==x2 && y1== y2 && r1==r2){
-            cout << -1 << endl;
-        }
-        else{
-            if(pick ==r1 || pick ==r2){
-                cout << 0 << endl;
-            }
-            else{
-                if(r1+r2 > pick){
-                    cout << 2 << endl;
-                }
-                else if(r1+r2==pick){
-                    cout << 1 << endl;
-                }
-            }
+int main()
+{
+    int x1, y1, r1, x2, y2, r2;
+    int T;
+    double d;
 
+    cin >> T;
+    for (int i = 0; i < T; i++)
+    {
+        cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2;
+        d = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+        if (r1 > r2)
+        {
+            int temp = r2;
+            r2 = r1;
+            r1 = temp;
+        } // sort
+
+        if (r1 + r2 > d)
+        {
+            if (r2 - r1 < d)
+            {
+                cout << 2 << endl;
+            }
         }
 
+        if (r1 + r2 == d || r2 - r1 == d)
+        {
+            if (d == 0 && r1 == r2)
+            {
+                cout << -1 << endl;
+            }
+            else
+            {
+                cout << 1 << endl;
+            }
+        }
+
+        if (r1 + r2 < d || d < r2 - r1)
+        {
+            cout << 0 << endl;
+        }
     }
+
+    return 0;
 }

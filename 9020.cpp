@@ -1,62 +1,67 @@
 #include <iostream>
-#include <cstdlib>
-
+#include <math.h>
 using namespace std;
 
-bool isprime(int n)
+bool isPrime(int n)
 {
-    int i = 2;
-    while (1)
+    if (n == 1)
+        return false;
+    if (n == 2)
+        return true;
+    if (n % 2 == 0)
+        return false;
+    int rootnum = sqrt(n);
+    for (int i = 3; i <= rootnum; i++)
     {
-        if (i == n)
-        {
-            return true;
-        }
-        if (n % i != 0)
-        {
-            i++;
-        }
-        else
+        if (n % i == 0)
         {
             return false;
         }
     }
+    return true;
+}
+
+int *goldbach(int arr[], int num)
+{
+    int origin = num;
+    int second = 0;
+    int halfnum = num / 2;
+    if (isPrime(halfnum))
+    {
+        arr[0] = halfnum;
+        arr[1] = halfnum;
+        return arr;
+    }
+
+    while (1)
+    {
+        halfnum--;
+        if (isPrime(halfnum))
+        {
+            second = origin - halfnum;
+            if (isPrime(second))
+            {
+                arr[0] = halfnum;
+                arr[1] = second;
+                break;
+            }
+        }
+    }
+    return arr;
 }
 
 int main()
 {
     int T;
-    int num;
-    int base;
-    int next = 0;
-    int chai1, chai2;
-
     cin >> T;
-
+    int sample = 0;
+    bool flag;
+    int arr[2] = {};
     for (int i = 0; i < T; i++)
     {
-        cin >> num;
-        base = 3;
-        while (1)
-        {
-            chai2 = chai1;
-            next = num - base;
-            if (isprime(base) && isprime(next))
-            {
-                chai1 = abs(base - next);
-                if (chai1 < chai2)
-                {
-                    cout << base << ' ' << next << ' ' << chai1 << endl;
-                    break;
-                }
-            }
-            base += 1;
-
-            // else
-            // {
-            //     base += 1;
-            // }
-        }
+        cin >> sample;
+        goldbach(arr, sample);
+        cout << arr[0] << " " << arr[1] << endl;
     }
     return 0;
 }
