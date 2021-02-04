@@ -1,99 +1,73 @@
+#include <stdio.h>
 #include <iostream>
-#include <cmath>
+#include <vector>
 #include <algorithm>
-#include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
 int main()
 {
-    int avg;         //산술평균
-    int middle;      //중앙값
-    int mostnum = 0; //최빈값
-    int range;       //범위
-
-    int N;
-    cin >> N;
-
-    //Setting
-    int arr[N + 1];
-    int cnt[10000];
-    int sum = 0;
-    for (int i = 0; i <= 8001; i++)
+    int n, tmp;
+    double sum = 0;
+    int max = 0;
+    int index[2];
+    double x;
+    int x1;
+    vector<int> v;
+    vector<int> t;
+    int checkarr[8001] = {0};
+    cin >> n;
+    for (int i = 0; i < n; i++)
     {
-        cnt[i] = 0;
+        cin >> tmp;
+        v.push_back(tmp);
+    }
+    sort(v.begin(), v.end());
+
+    // 산술 평균
+    for (int i = 0; i < n; i++)
+    {
+        sum += v[i];
+        if (i != 0 && v[i] == v[i - 1])
+        {
+            t.push_back(i);
+        }
+        checkarr[4000 + v[i]]++;
     }
 
-    //Input
-    for (int i = 0; i < N; i++)
+    x = double(sum) / double(n);
+    x1 = int(round(x));
+    printf("%d\n", x1);
+
+    // 중앙값
+    printf("%d\n", v[n / 2]);
+
+    // 최빈값
+    index[0] = v[0];
+    index[1] = 0;
+
+    for (int i = 0; i < 8001; i++)
     {
-        cin >> arr[i];
-        if (arr[i] >= 0)
+        if (checkarr[i] > max)
         {
-            cnt[4000 + arr[i]]++;
+            max = checkarr[i];
+            index[0] = i - 4000;
+            index[1] = 0;
         }
-        if (arr[i] < 0)
+        else if (checkarr[i] == max)
         {
-            cnt[abs(arr[i]) - 1]++;
-        }
-        sum += arr[i];
-    }
-
-    //Avg
-
-    cout << round(sum / (double)N) << endl;
-    // TODO : 음수 반올림
-
-    //Middle
-    sort(arr, arr + N);
-    cout << arr[N / 2] << endl;
-
-    //mostnum
-    int most = 0;
-    for (int i = 0; i <= 8001; i++)
-    {
-        if (cnt[i] >= most)
-        {
-            most = cnt[i];
+            if (index[1] == 0)
+            {
+                index[0] = i - 4000;
+                index[1]++;
+            }
         }
     }
+    printf("%d\n", index[0]);
 
-    int save1 = 0;
-    int save2;
-    int result = 0;
-    int cntarr[10000];
-    int idx = 0;
-    for (int i = 0; i <= 8001; i++)
-    {
-        if (cnt[i] == most)
-        {
-            cntarr[idx] = i;
-            idx++;
-            cout << cntarr[idx] << " ";
-        }
-    }
+    // 범위
 
-    save1 = cntarr[0];
-    save2 = cntarr[1];
-    if (save1 <= 4000)
-    {
-        if (save2 < 4000)
-        {
-            result = -save1;
-        }
-        if (save2 > 4000)
-        {
-            result = save2 - 4000;
-        }
-    }
-    if (save1 > 4000)
-    {
-        result = save1 - 4000;
-    }
-
-    cout << result << endl;
-
-    //range
-    range = abs(arr[N - 1] - arr[0]);
-    cout << range << endl;
+    printf("%d\n", v[n - 1] - v[0]);
+    return 0;
 }
