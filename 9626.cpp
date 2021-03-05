@@ -6,75 +6,66 @@
 
 using namespace std;
 
+char chess[20][20];
+
+void make_chess(int width, int height)
+{
+    char start, next;
+
+    for (int i = 0; i < height; i++)
+    {
+        if (i % 2 != 0)
+        {
+            start = '.';
+            next = '#';
+        }
+        else
+        {
+            start = '#';
+            next = '.';
+        }
+        for (int j = 0; j < width; j++)
+        {
+            chess[i][j] = start;
+            char temp = start;
+            start = next;
+            next = temp;
+        }
+    }
+}
+
 int main()
 {
     int M, N, U, L, R, D;
-    char odd = '#';
-    char even = '.';
-    int line = 1;
-    char arr[1000];
-    char puzzle[1000];
 
     cin >> M >> N;
     cin >> U >> L >> R >> D;
-    char word;
+
+    int width = N + L + R;
+    int height = M + U + D;
+    char puzzle[M + 1][N + 1];
+    for (int i = 0; i < M; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            cin >> puzzle[i][j];
+        }
+    }
+    make_chess(width, height);
 
     for (int i = 0; i < M; i++)
     {
         for (int j = 0; j < N; j++)
         {
-            cin >> word;
-            puzzle[(i * M) + j] = word;
+            chess[i + U][j + L] = puzzle[i][j];
         }
     }
 
-    for (int i = 0; i < M + U + D; i++)
+    for (int i = 0; i < height; i++)
     {
-        for (int j = 0; j < L + N + R; j++)
+        for (int j = 0; j < width; j++)
         {
-            if (line % 2 != 0)
-            {
-                if (j % 2 == 0)
-                {
-                    arr[i * (L + N + R) + j] = odd;
-                }
-                else
-                {
-                    arr[i * (L + N + R) + j] = even;
-                }
-            }
-            else
-            {
-                if (j % 2 == 0)
-                {
-                    arr[i * (L + N + R) + j] = even;
-                }
-                else
-                {
-                    arr[i * (L + N + R) + j] = odd;
-                }
-            }
-        }
-        line++;
-    }
-
-    int idx = 0;
-    int add = L + R;
-    int start = U * (L + R + N) + L;
-    for (int i = 0; i < M; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            arr[start + ((add + N) * i) + j] = puzzle[idx];
-            idx++;
-        }
-    }
-
-    for (int i = 0; i < M + U + D; i++)
-    {
-        for (int j = 0; j < L + N + R; j++)
-        {
-            cout << arr[j + i * (L + N + R)];
+            cout << chess[i][j];
         }
         cout << '\n';
     }

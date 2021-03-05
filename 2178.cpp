@@ -1,17 +1,18 @@
 #include <iostream>
 using namespace std;
 
-int main(){
-    int n,m;
-    cin >> n;
-    cin >> m;
-    int arr[n][m] = {};
-    for(int i=0;i<n;i++){
-        for(int j=0;j<m;j++){
-            cin >> arr[i][j];
-        }
-        cout << endl;
-    }
-    
+int main()
+{
+    int N, M;
+    cin >> N >> M;
 
+    int maze[N + 1][M + 1];
+
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; i < M; j++)
+        {
+            cin >> maze[i][j];
+        }
+    }
 }
