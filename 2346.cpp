@@ -5,42 +5,54 @@ using namespace std;
 
 int main()
 {
-    deque<int> dq;
     int N;
-    vector<int> seq;
+    vector<int> v;
+    deque<pair<int, int> > dq;
 
     cin >> N;
 
-    for (int i = 0; i < N; i++)
+    int seq;
+    for (int i = 1; i <= N; i++)
     {
-        int num;
-        cin >> num;
-        dq.push_back(num);
+        cin >> seq;
+        dq.push_back(make_pair(i, seq));
     }
 
-    int idx = 0;
-    int value;
-    value = dq.front();
-    seq.push_back(1);
+    int start = dq.front().second;
+    cout << dq.front().first << " ";
     dq.pop_front();
 
-    while (dq.size())
+    while (!dq.empty())
     {
-        if (value > 0)
+        if (start > 0)
         {
-            for (int k = 0; k < value; k++)
+            for (int i = 0; i < start; i++)
             {
-                dq.push_back(dq.front());
+                int f = dq.front().first;
+                int s = dq.front().second;
+
+                pair<int, int> temp = make_pair(f, s);
+                dq.push_back(temp);
                 dq.pop_front();
             }
-            value = dq.front();
+            start = dq.back().second;
+            cout << dq.back().first << " ";
+            dq.pop_back();
         }
         else
         {
-        }
+            for (int i = 0; i > start; i--)
+            {
+                int f = dq.back().first;
+                int s = dq.back().second;
 
-        seq.push_back(idx + 1);
-        idx = q.front();
-        q.pop();
+                pair<int, int> temp = make_pair(f, s);
+                dq.push_front(temp);
+                dq.pop_back();
+            }
+            start = dq.front().second;
+            cout << dq.front().first << " ";
+            dq.pop_front();
+        }
     }
 }
