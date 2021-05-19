@@ -1,47 +1,24 @@
-from collections import deque
+import sys
 
-dx = [-1, 1, 0, 0]
-dy = [0, 0, -1, 1]
-
-
-def bfs(x, y, num):
-    dq = deque()
-    dq.append((x, y, num))
-    field[x][y] = num
-
-    while dq:
-        x, y, num = dq.popleft()
-        if num < 4:
-            for i in range(4):
-                nx = x + dx[i]
-                ny = y + dy[i]
-
-                if 0 <= nx < pow(2, N) and 0 <= ny < pow(2, N):
-                    if num == 0:
-                        nx = x
-                        ny = y + 1
-                    elif num == 1:
-                        nx = x + 1
-                        ny = y - 1
-                    elif num == 2:
-                        nx = x
-                        ny = y + 1
-                    num += 1
-                    field[nx][ny] = num
-                    dq.append((nx, ny, num))
-                    visited[nx][ny] = True
-
-
+sys.setrecursionlimit(100000)
 N, r, c = map(int, input().split())
-field = [list(0 for _ in range(pow(2, N))) for _ in range(pow(2, N))]
-visited = [list(False for _ in range(pow(2, N))) for _ in range(pow(2, N))]
+cnt = 0
 
-idx = 0
+def divide(s, nx, ny):
+    global cnt
+    if nx == r and ny == c:
+        print(cnt)
+        exit(0)
+    elif s == 1:
+        cnt += 1
+        return
+    if not (nx <= r < nx + s) and not (ny <= c < ny + s):
+        cnt += s ** 2
+        return
+    divide(s // 2, nx, ny)
+    divide(s // 2, nx, ny + s // 2)
+    divide(s // 2, nx + s // 2, ny)
+    divide(s // 2, nx + s // 2, ny + s // 2)
 
-for i in range(pow(2, N)):
-    for j in range(pow(2, N)):
-        if not visited[i][j]:
-            bfs(i, j, 0)
 
-for i in range(pow(2, N)):
-    print(field[i])
+divide(2 ** N, 0, 0)
