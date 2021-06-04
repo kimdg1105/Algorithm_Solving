@@ -21,22 +21,13 @@ for _ in range(T):
     for i in range(len(l)):
         mydict[l[i][1]].append(l[i][0])
 
+    # print(mydict)
 
-    ret = 0
-    for i in range(1,len(mydict.keys())+1):
-        per = list(combinations(mydict.keys(),i))
-        # print("per is",per)
-        for item in per:
-            if len(item) == 1:
-                for e in item:
-                    ret += len(mydict[e])
 
-            else:
-                tmp = 1
-                for e in item:
-                    tmp *= len(mydict[e])
-                ret += tmp
-
+    ret = 1
+    for key in mydict:
+        ret *= len(mydict[key]) + 1
+    ret -= 1
             # print("now ret is",ret)
     print(ret)
 
