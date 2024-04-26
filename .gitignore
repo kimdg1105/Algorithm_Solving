@@ -1,4 +1,5 @@
 
 *.xml
-
-.idea/Algorithm_Solving.iml
+*.iml
+.idea
+/out
