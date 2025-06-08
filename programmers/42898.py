@@ -2,30 +2,27 @@ from collections import deque
 
 
 def solution(m, n, puddles):
+    puddles = [[q, p] for [p, q] in puddles]
     answer = 0
-    matrix = [[0] * m for _ in range(n)]
-    for puddle in puddles:
-        x, y = puddle
-        matrix[y - 1][x - 1] = 1
+    dp = [[0] * (m + 1) for _ in range(n + 1)]
+    dp[1][1] = 1
+    for i in range(1, n + 1):
+        for j in range(1, m + 1):
+            if i == j == 1:
+                continue
+            if [i, j] in puddles:
+                dp[i][j] = 0
 
-    start_x, start_y = 0, 0
-    dx = [0, 1]
-    dy = [1, 0]
+            else:
+                x = dp[i - 1][j]
+                y = dp[i][j - 1]
 
-    q = deque()
-    q.append((start_x, start_y))
+                dp[i][j] = (x + y) % 1_000_000_007
 
-    while q:
-        x, y = q.popleft()
-        for i in range(2):
-            cur_x, cur_y = x + dx[i], y + dy[i]
-            if cur_x == n - 1 and cur_y == m - 1:
-                answer += 1
-            if 0 <= cur_x < n and 0 <= cur_y < m:
-                if matrix[cur_x][cur_y] == 0:
-                    q.append((cur_x, cur_y))
+    answer = dp[-1][-1]
 
-    return answer % 1_000_000_007
+    return answer
 
 
 print(solution(4, 3, [[2, 2]]))  # 4
+print(solution(1, 3, [[1, 2]]))  # 1
