@@ -1,28 +1,18 @@
-import sys
-input = sys.stdin.readline
+n = int(input())
 
-N = int(input())
-member = [[0,0,0]]
-for i in range(N):
-    kg, height = map(int, input().split())
-    member.append([i,kg,height])
+human = []
+arr = [1] * n
+for _ in range(n):
+    x, y = map(int, input().split())
+    human.append((x, y))
 
-rank = 0
-member.sort(key= lambda x: [x[1], x[2]], reverse=True)
+for i in range(n):
+    for j in range(n):
+        if i == j:
+            continue
 
-ret = []
-for i in range(N):
-    if member[i][1] > member[i+1][1] and member[i][2] > member[i+1][2]:
-        rank = i + 1
-        ret.append([member[i],rank])
-        rank +=1
-
-    else:
-        ret.append([member[i], rank])
+        if human[i][0] < human[j][0] and human[i][1] < human[j][1]:
+            arr[i] += 1
 
 
-
-
-print(member)
-print("ans:")
-print(ret)
+print(" ".join(map(str, arr)))
