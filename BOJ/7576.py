@@ -1,49 +1,40 @@
-import sys
 from collections import deque
 
-input = sys.stdin.readline
 
-M, N = map(int, input().split())
-dq = deque()
-field = []
-for _ in range(N):
-    field.append(list(map(int, input().split())))
-
-cnt = 0
-
-def dfs():
-    global cnt
-    dx = [-1, 1, 0, 0]
-    dy = [0, 0, -1, 1]
-
-    while dq:
-        x, y, day = dq.popleft()
-        day += 1
-        # print("xy = ", x, y)
-        for i in range(4):
-            nx = x + dx[i]
-            ny = y + dy[i]
-
-            if 0 <= nx < N and 0 <= ny < M:
-                if field[nx][ny] == -1:
-                    continue
-                if field[nx][ny] == 0:
-                    field[nx][ny] = 1
-                    cnt += 1
-                    dq.append((nx, ny, day))
-    return day
+m, n = map(int, input().split())
+arr = []
+for _ in range(n):
+    raw = list(map(int, input().split()))
+    arr.append(raw)
 
 
-for i in range(N):
-    for j in range(M):
-        if field[i][j] == 1:
-            dq.append((i, j,0))
+q = deque()
+dx = [-1, 1, 0, 0]
+dy = [0, 0, 1, -1]
 
-ret = dfs() - 1
+for i in range(n):
+    for j in range(m):
+        if arr[i][j] == 1:
+            q.append((i, j))
 
-for i in field:
-    for j in i:
-        if j == 0:
-           ret = -1
+while q:
+    cur_x, cur_y = q.popleft()
 
-print(ret)
+    for i in range(4):
+        nx, ny = cur_x + dx[i], cur_y + dy[i]
+        if 0 <= nx < n and 0 <= ny < m:
+            if arr[nx][ny] == 0:
+                arr[nx][ny] = arr[cur_x][cur_y] + 1
+                q.append((nx, ny))
+
+
+ans = 0
+is_false = False
+for raw in arr:
+    for val in raw:
+        if val == 0:
+            is_false = True
+        else:
+            ans = max(ans, val)
+
+print(-1) if is_false else print(ans - 1)
