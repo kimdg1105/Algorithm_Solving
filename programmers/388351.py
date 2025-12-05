@@ -1,41 +1,29 @@
 def solution(schedules, timelogs, startday):
     answer = 0
-    ans = [True for _ in range(len(schedules))]
+    due_time = []
+    for s in schedules:
+        s += 10
+        if s % 100 >= 60:
+            s += 40
+        due_time.append(s)
 
-    for idx, schedule in enumerate(schedules):
-        day = startday
-        if ans[idx] == False:
-            continue
-
-        end_time = make_end_time(schedule)
-        for timelog in timelogs[idx]:
-            if day == 6 or day == 7:
+    for idx, person in enumerate(timelogs):
+        cur_day = startday
+        gift = True
+        for day in person:
+            if cur_day == 8:
+                cur_day = 1
+            if cur_day in [6, 7]:
+                cur_day += 1
                 continue
-            if timelog > end_time:
-                ans[idx] = False
-                continue
-            if day < 7:
-                day += 1
-            else:
-                day = 1
-
-    for a in ans:
-        if a == True:
+            if due_time[idx] < day:
+                gift = False
+                break
+            cur_day += 1
+        if gift:
             answer += 1
 
     return answer
-
-
-def make_end_time(timelog):
-    end_time = timelog + 10
-    hour = end_time // 100
-    minute = end_time % 100
-
-    if minute >= 60:
-        minute = minute - 60
-        hour += 1
-
-    return hour * 100 + minute
 
 
 print(
